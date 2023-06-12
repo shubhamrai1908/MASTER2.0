@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="60dp"
+    android:padding="20dp"
+    tools:context=".DashboardFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="Welcome Master User\n You can manage different Task\n Please go to Navigation Drawer."
+        android:gravity="center_horizontal" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menu"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:hintTextColor="@color/purple_500"
+            android:hint="SELECT SIM CARD:">
+
+            <AutoCompleteTextView
+                android:id="@+id/serversim"
+                android:shadowColor="@color/purple_500"
+                android:textColor="@color/purple_500"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menu1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_below="@+id/menu"
+            app:hintTextColor="@color/purple_500"
+            android:hint="PERSON SIM CARD:">
+
+            <AutoCompleteTextView
+                android:id="@+id/groundsim"
+                android:shadowColor="@color/purple_500"
+                android:textColor="@color/purple_500"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+    <TextView
+        android:layout_gravity="bottom"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NOTE: Please Select your Preferred sim card from above option to send sms in future."/>
+</FrameLayout>
