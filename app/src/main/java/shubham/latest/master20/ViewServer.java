@@ -27,6 +27,8 @@ public class ViewServer extends AppCompatActivity {
         airtel_num=findViewById(R.id.airtel_num);
         bsnl_num=findViewById(R.id.bsnl_num);
         vi_num=findViewById(R.id.vi_num);
+        MasterDatabase db=new MasterDatabase(getApplicationContext());
+        db.eraseData("serverlist_table");
 
         DatabaseReference mDatabasejio = FirebaseDatabase.getInstance().getReference("jio");
 
@@ -38,6 +40,8 @@ public class ViewServer extends AppCompatActivity {
                     String value = dataSnapshot.getValue(String.class);
                     jio_num.setText(value);
                     Log.d(TAG, "Value is: " + value);
+                   // db.deleteDatasrver("serverlist_table","jio");
+                    db.serverlistTable("jio",value);
                 }
 
                 @Override
@@ -56,6 +60,8 @@ public class ViewServer extends AppCompatActivity {
                 String value = dataSnapshot.getValue(String.class);
                 airtel_num.setText(value);
                 Log.d(TAG, "Value is: " + value);
+              //  db.deleteDatasrver("serverlist_table","airtel");
+                db.serverlistTable("airtel",value);
             }
 
             @Override
@@ -75,6 +81,8 @@ public class ViewServer extends AppCompatActivity {
                 String value = dataSnapshot.getValue(String.class);
                 bsnl_num.setText(value);
                 Log.d(TAG, "Value is: " + value);
+              //  db.deleteDatasrver("serverlist_table","bsnl");
+                db.serverlistTable("bsnl",value);
             }
 
             @Override
@@ -94,6 +102,8 @@ public class ViewServer extends AppCompatActivity {
                 String value = dataSnapshot.getValue(String.class);
                 vi_num.setText(value);
                 Log.d(TAG, "Value is: " + value);
+               // db.deleteDatasrver("serverlist_table","vi");
+                db.serverlistTable("vi",value);
             }
 
             @Override

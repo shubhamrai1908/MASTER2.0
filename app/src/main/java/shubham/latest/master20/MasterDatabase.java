@@ -136,6 +136,12 @@ public class MasterDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return true;
     }
+    public void deleteDatasrver(String name,String TABLE_NAME)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM "+ TABLE_NAME + " WHERE name =" + name);
+        sqLiteDatabase.close();
+    }
 
     public Cursor getAll(String TABLE_NAME)
     {
