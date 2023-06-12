@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Add Ground"
+        android:id="@+id/addground"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/baseline_add_24"/>
+
+    <item android:title="View Ground"
+        android:id="@+id/viewground"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/baseline_view_stream_24"/>
+
+    <item android:title="View Server"
+        android:id="@+id/viewserver"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/baseline_view_stream_24"/>
+    <item android:title="Add Server"
+        android:id="@+id/addserver"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/baseline_add_24"/>
+</menu>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewServer">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="Only View, Cannot edit."/>
+    <TextView
+        android:id="@+id/jio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/tv"
+        android:text="JIO:"/>
+
+    <TextView
+        android:id="@+id/jio_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignLeft="@+id/jio"
+        android:layout_below="@+id/tv"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="XXXXXXXXXX" />
+    <TextView
+        android:id="@+id/airtel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/jio"
+        android:text="AIRTEL:"/>
+    <TextView
+        android:id="@+id/airtel_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/airtel"
+        android:layout_below="@+id/jio_num"
+        android:textStyle="bold"
+        android:text="XXXXXXXXXX" />
+
+    <TextView
+        android:id="@+id/bsnl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/airtel"
+        android:text="BSNL:"/>
+    <TextView
+        android:id="@+id/bsnl_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/bsnl"
+        android:layout_below="@+id/airtel_num"
+        android:textStyle="bold"
+        android:text="XXXXXXXXXX" />
+
+    <TextView
+        android:id="@+id/vi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/bsnl"
+        android:text="VI:"/>
+    <TextView
+        android:id="@+id/vi_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/vi"
+        android:layout_below="@+id/bsnl_num"
+        android:textStyle="bold"
+        android:text="XXXXXXXXXX" />
+
+
+
+
+</RelativeLayout>
