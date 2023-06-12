@@ -1,5 +1,6 @@
 package shubham.latest.master20;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +14,15 @@ public class AddServer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_server);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+     /*   FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("vi");
-
         myRef.setValue("+7587");
+
+      */
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+        finish();
     }
 }

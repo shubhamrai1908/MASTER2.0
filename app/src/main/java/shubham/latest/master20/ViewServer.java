@@ -3,6 +3,7 @@ package shubham.latest.master20;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -105,7 +106,11 @@ public class ViewServer extends AppCompatActivity {
 
 
     }
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+        finish();
+    }
 
 
 }

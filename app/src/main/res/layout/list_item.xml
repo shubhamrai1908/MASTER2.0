@@ -9,5 +9,14 @@
         android:text="Name:     phone:"
         android:padding="16dp"
         android:textSize="25sp"/>
+    <ImageButton
+        android:id="@+id/img_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:padding="16dp"
+        android:src="@drawable/baseline_delete_24"/>
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
                 Toast.makeText(context,ground.uid,Toast.LENGTH_SHORT).show();
             }
         });
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uid=ground.uid;
+                Task<Void> voidTask = Utils.removeUser(uid);
+                Toast.makeText(context, ground.name+" Deleted from ground database", Toast.LENGTH_LONG).show();
+
+            }
+        });
         holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -73,10 +84,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
+        ImageButton button;
 
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             textView=itemView.findViewById(R.id.ground_list);
+            button=itemView.findViewById(R.id.img_button);
+
         }
     }
 }
