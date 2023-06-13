@@ -32,7 +32,12 @@ public class LoginActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+    try {
         fAuth = FirebaseAuth.getInstance();
+    }catch (Exception e)
+    {
+        Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+    }
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
 
