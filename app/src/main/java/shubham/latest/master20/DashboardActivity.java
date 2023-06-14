@@ -50,10 +50,12 @@ public class DashboardActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard);
         nav = findViewById(R.id.navmenu);
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
         }
+        getdata();
         name = "Name";
         email = "Email ID";
         phone = "Phone Number";
@@ -143,7 +145,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         finish();
 
-    }}
+    }
 
     /*    try {
             ActionBar actionBar = getSupportActionBar();
@@ -183,7 +185,7 @@ public class DashboardActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
     private void getdata() {
 
         try {
@@ -221,4 +223,4 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-}*/
+}
