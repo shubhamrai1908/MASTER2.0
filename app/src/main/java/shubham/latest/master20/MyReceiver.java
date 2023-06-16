@@ -15,6 +15,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MyReceiver extends BroadcastReceiver {
+    public static final String SMS_RECEIVE_ACTION = "android.provider.Telephony.SMS_RECEIVED";
     private static final String TAG = MyReceiver.class.getSimpleName();
     public static final String pdu_type = "pdus";
     MasterDatabase masterDatabase;
@@ -39,6 +41,8 @@ public class MyReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (TextUtils.equals(intent.getAction(), SMS_RECEIVE_ACTION)) {
+            Bundle data = intent.getExtras();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(context, "user not logged in", Toast.LENGTH_SHORT).show();
@@ -51,45 +55,45 @@ public class MyReceiver extends BroadcastReceiver {
         String format = bundle.getString("format");
         Object[] pdus = (Object[]) bundle.get(pdu_type);
         msgs = new SmsMessage[pdus.length];
-       SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
+        SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                       return;
+            return;
         }
         List localList = localSubscriptionManager.getActiveSubscriptionInfoList();
-        sim=(SubscriptionInfo)localList.get(0);
-        final SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(context);
-        int pos=preferences.getInt("SelectedSim", 0);
-        if(pos==0) {
+        sim = (SubscriptionInfo) localList.get(0);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int pos = preferences.getInt("SelectedSim", 0);
+        if (pos == 0) {
             sim = (SubscriptionInfo) localList.get(0);
             // Toast.makeText(context,"sim1",Toast.LENGTH_SHORT).show();
         }
-        if (pos==1)
-        {
-            sim=(SubscriptionInfo)localList.get(1);
+        if (pos == 1) {
+            sim = (SubscriptionInfo) localList.get(1);
             //Toast.makeText(context,"sim2",Toast.LENGTH_SHORT).show();
 
         }
         masterDatabase = new MasterDatabase(context);
-        StringBuilder sender=new StringBuilder();
+        StringBuilder sender = new StringBuilder();
         long time = 0;
 
         for (int i = 0; i < msgs.length; i++) {
             msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
             sender.append(msgs[i].getOriginatingAddress());
             strMessage.append(msgs[i].getMessageBody());
-            time=msgs[i].getTimestampMillis();
-            Log.d("BROADCAST", "onReceive: " + "SENDER:"+sender+"\n"+"MESSAGE:"+strMessage+"\n"+"TIME:"+time);
+            time = msgs[i].getTimestampMillis();
+            Log.d("BROADCAST", "onReceive: " + "SENDER:" + sender + "\n" + "MESSAGE:" + strMessage + "\n" + "TIME:" + time);
             //Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
-           // smsSendMessage(String.valueOf(strMessage));
+            // smsSendMessage(String.valueOf(strMessage));
         }
-        DateFormat f=new SimpleDateFormat();
-        Calendar calendar=Calendar.getInstance();
+        DateFormat f = new SimpleDateFormat();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        final String myTime=f.format(calendar.getTime());
-        mainMethod(String.valueOf(sender),String.valueOf(strMessage),context,myTime);
+        final String myTime = f.format(calendar.getTime());
+        mainMethod(String.valueOf(sender), String.valueOf(strMessage), context, myTime);
+    }
     }
     private void mainMethod(String sender, String message, Context context, String time) {
-      //  Toast.makeText(context,"MAIN method called",Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(context,"MAIN method called",Toast.LENGTH_SHORT).show();
         switch (verifySender(sender, message, context)) {
             case 1:
                 String reqno = message.substring(2, 12);
@@ -136,7 +140,7 @@ public class MyReceiver extends BroadcastReceiver {
                 msg = "91" + reqno.trim();
                 break;
             case "idea":
-                server = serverlist.get("idea");
+                server = serverlist.get("vi");
                 msg = "CEL 91" + reqno.trim();
                 break;
             case "bsnl":
@@ -229,7 +233,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         for(int i=0;i<groundlist.size();i++) {
             if (sender.contains(groundlist.get(i))) {
-               // Toast.makeText(context,"Ground Verified",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context,"Ground Verified",Toast.LENGTH_SHORT).show();
                 if (message.length() >= 16 && message.length() <= 20){
                     Toast.makeText(context,"Ground and msg Verified",Toast.LENGTH_SHORT).show();
                     return 1;
@@ -242,10 +246,10 @@ public class MyReceiver extends BroadcastReceiver {
         //ground ends
         //for server
 
-        if(sender.contains("7021265165")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
+        if(sender.contains("7518645443")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
         {
             Toast.makeText(context,"Server Verified",Toast.LENGTH_SHORT).show();
-            return 9;
+            return 2;
 
         }
 
@@ -253,21 +257,5 @@ public class MyReceiver extends BroadcastReceiver {
         return 0;
 
     }
-        public void smsSendMessage(String msg) {
 
-
-        String destinationAddress ="123";
-
-        String smsMessage = msg;
-
-        String scAddress = null;
-        // Set pending intents to broadcast
-        // when message sent and when delivered, or set to null.
-        PendingIntent sentIntent = null, deliveryIntent = null;
-        // Use SmsManager.
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage
-                (destinationAddress, scAddress, smsMessage,
-                        sentIntent, deliveryIntent);
-    }
 }

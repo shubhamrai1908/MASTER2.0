@@ -222,5 +222,10 @@ public class DashboardActivity extends AppCompatActivity {
             Toast.makeText(DashboardActivity.this,e.toString(),Toast.LENGTH_LONG).show();
         }
     }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        finish();
+    }
 
 }
