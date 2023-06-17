@@ -68,9 +68,10 @@ public class DashboardActivity extends AppCompatActivity {
         TextView Email = headerView.findViewById(R.id.email);
         TextView Phone = headerView.findViewById(R.id.phone);
         ImageView photo = headerView.findViewById(R.id.photo);
-        Name.setText(name);
+      //  Name.setText(name);
         Email.setText(email);
         Phone.setText(phone);
+        photo.setImageResource(R.drawable.master);
 
         drawerLayout = findViewById(R.id.drawer);
 
@@ -94,8 +95,8 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), ViewServer.class));
                     finish();
                 } else if (itemId == R.id.addserver) {
-                    startActivity(new Intent(getApplicationContext(), AddServer.class));
-                    finish();
+                   // startActivity(new Intent(getApplicationContext(), AddServer.class));
+                   // finish();
                 }
                 return true;
 
@@ -147,45 +148,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    /*    try {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle("Dashboard");
-            actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-            Log.d(TAG, "Value is: " + e.toString());
-        }
-        getdata();
-    }
-    @Override
-    public boolean onCreateOptionsMenu( Menu menu ) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-
-        int itemId = item.getItemId();
-        if (itemId == R.id.addground) {
-            startActivity(new Intent(getApplicationContext(),AddGround.class));
-            finish();
-        } else if (itemId == R.id.viewground) {
-            startActivity(new Intent(getApplicationContext(),ViewGround.class));
-            finish();
-        } else if (itemId == R.id.viewserver) {
-            startActivity(new Intent(getApplicationContext(),ViewServer.class));
-            finish();
-        }
-        else if (itemId == R.id.addserver) {
-            startActivity(new Intent(getApplicationContext(), AddServer.class));
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
     private void getdata() {
 
         try {
