@@ -37,60 +37,80 @@ public class MyReceiver extends BroadcastReceiver {
     public static final String pdu_type = "pdus";
     MasterDatabase masterDatabase;
     SubscriptionInfo sim;
+    SubscriptionInfo sim1;
 
     @TargetApi(Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
         if (TextUtils.equals(intent.getAction(), SMS_RECEIVE_ACTION)) {
+            Log.d("sendREQtoSER","process started");
             Bundle data = intent.getExtras();
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Toast.makeText(context, "user not logged in", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Toast.makeText(context, "user not logged in", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        Bundle bundle = intent.getExtras();
-        SmsMessage[] msgs;
-        StringBuilder strMessage = new StringBuilder();
-        String format = bundle.getString("format");
-        Object[] pdus = (Object[]) bundle.get(pdu_type);
-        msgs = new SmsMessage[pdus.length];
-        SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        List localList = localSubscriptionManager.getActiveSubscriptionInfoList();
-        sim = (SubscriptionInfo) localList.get(0);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int pos = preferences.getInt("SelectedSim", 0);
-        if (pos == 0) {
+            Bundle bundle = intent.getExtras();
+            SmsMessage[] msgs;
+            StringBuilder strMessage = new StringBuilder();
+            String format = bundle.getString("format");
+            Object[] pdus = (Object[]) bundle.get(pdu_type);
+            msgs = new SmsMessage[pdus.length];
+            SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
+            if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            List localList = localSubscriptionManager.getActiveSubscriptionInfoList();
             sim = (SubscriptionInfo) localList.get(0);
-            // Toast.makeText(context,"sim1",Toast.LENGTH_SHORT).show();
-        }
-        if (pos == 1) {
-            sim = (SubscriptionInfo) localList.get(1);
-            //Toast.makeText(context,"sim2",Toast.LENGTH_SHORT).show();
+            sim1 = (SubscriptionInfo) localList.get(0);
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            int pos = preferences.getInt("SelectedSim", 0);
+            int pos1 = preferences.getInt("SelectedSim1", 0);
+            if (pos == 0) {
+                sim = (SubscriptionInfo) localList.get(0);
+                // Toast.makeText(context,"sim1",Toast.LENGTH_SHORT).show();
+            }
+            if (pos == 1) {
+                sim = (SubscriptionInfo) localList.get(1);
+                //Toast.makeText(context,"sim2",Toast.LENGTH_SHORT).show();
 
-        }
-        masterDatabase = new MasterDatabase(context);
-        StringBuilder sender = new StringBuilder();
-        long time = 0;
+            }
+            if (pos1 == 0) {
+                sim1 = (SubscriptionInfo) localList.get(0);
+                // Toast.makeText(context,"sim1",Toast.LENGTH_SHORT).show();
+            }
+            if (pos1 == 1) {
+                sim1 = (SubscriptionInfo) localList.get(1);
+                //Toast.makeText(context,"sim2",Toast.LENGTH_SHORT).show();
 
-        for (int i = 0; i < msgs.length; i++) {
-            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
-            sender.append(msgs[i].getOriginatingAddress());
-            strMessage.append(msgs[i].getMessageBody());
-            time = msgs[i].getTimestampMillis();
-            Log.d("BROADCAST", "onReceive: " + "SENDER:" + sender + "\n" + "MESSAGE:" + strMessage + "\n" + "TIME:" + time);
-            //Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
-            // smsSendMessage(String.valueOf(strMessage));
+            }
+
+            masterDatabase = new MasterDatabase(context);
+            StringBuilder sender = new StringBuilder();
+            long time = 0;
+
+            for (int i = 0; i < msgs.length; i++) {
+                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
+                sender.append(msgs[i].getOriginatingAddress());
+                strMessage.append(msgs[i].getMessageBody());
+                time = msgs[i].getTimestampMillis();
+                Log.d("BROADCAST", "onReceive: " + "SENDER:" + sender + "\n" + "MESSAGE:" + strMessage + "\n" + "TIME:" + time);
+                //Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
+                // smsSendMessage(String.valueOf(strMessage));
+            }
+            DateFormat f = new SimpleDateFormat();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(time);
+            final String myTime = f.format(calendar.getTime());
+            try {
+                  mainMethod(String.valueOf(sender), String.valueOf(strMessage), context, myTime);
+            }
+            catch (Exception e)
+            {
+                Log.d("sendREQtoSER","err--"+e.toString());
+            }
         }
-        DateFormat f = new SimpleDateFormat();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-        final String myTime = f.format(calendar.getTime());
-        mainMethod(String.valueOf(sender), String.valueOf(strMessage), context, myTime);
-    }
     }
     private void mainMethod(String sender, String message, Context context, String time) {
         //  Toast.makeText(context,"MAIN method called",Toast.LENGTH_SHORT).show();
@@ -104,7 +124,7 @@ public class MyReceiver extends BroadcastReceiver {
 
                 break;
             case 2:
-
+                Log.d("sendREQtoSER","Moved back to case 2");
                 identifyAndReply(sender, message, time, context);
 
                 break;
@@ -184,6 +204,7 @@ public class MyReceiver extends BroadcastReceiver {
     }
     private void identifyAndReply(String sender,String message, String time,Context context)
     {
+        Log.d("sendREQtoSER","identifying penidng req");
         Cursor cursor = masterDatabase.getAll("request_table");
         if(cursor.moveToFirst()){
             do{
@@ -193,23 +214,30 @@ public class MyReceiver extends BroadcastReceiver {
                     Toast.makeText(context,"Request verified",Toast.LENGTH_SHORT).show();
                     String gnd=cursor.getString(1);
                     String opname=cursor.getString(3);
+                    insertIntoDB("server_to_master_table", sender, req, "--", opname.trim(), message, time);
                     if(message.contains("Received Request for")&&opname.equalsIgnoreCase("jio"))
                     {
+                        Log.d("sendREQtoSER","only ack msg");
                         return;
                     }
 
                     //SmsManager.getSmsManagerForSubscriptionId(sim.getSubscriptionId()).sendTextMessage(server, null,msg  , null, null);
 
                     try {
-                        SmsManager.getSmsManagerForSubscriptionId(sim.getSubscriptionId()).sendTextMessage(gnd, null, message, null, null);
+                        Log.d("sendREQtoSER","ground-"+gnd+"\nmsg-"+message);
+                        SmsManager smsManager = SmsManager.getDefault();
+                        ArrayList<String> parts = smsManager.divideMessage(message);
+
+                        SmsManager.getSmsManagerForSubscriptionId(sim1.getSubscriptionId()).sendMultipartTextMessage(gnd, null, parts, null, null);
                     }
                     catch(Exception e)
                     {
+                        Log.d("sendREQtoSER",e.toString());
                         Toast.makeText(context,e.toString(),Toast.LENGTH_LONG).show();
                         return;
                     }
 
-                    insertIntoDB("server_to_master_table", sender, req, "--", opname.trim(), message, time);
+
                     insertIntoDB("master_to_gnd_table", gnd, req, opname.trim(), "--", message, time);
                     masterDatabase.deleteData(cursor.getString(0), "request_table");
                     return;
@@ -222,7 +250,8 @@ public class MyReceiver extends BroadcastReceiver {
     private int verifySender(String sender, String message,Context context) {
         //for ground sender
 
-
+        Log.d("sendREQtoSER","verify sender proccess started");
+        Log.d("sendREQtoSER","trying to verify ground");
         Cursor cursor = masterDatabase.getAll("groundlist_table");
         List<String> groundlist=new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -245,13 +274,15 @@ public class MyReceiver extends BroadcastReceiver {
 
         //ground ends
         //for server
-
-        if(sender.contains("7518645443")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
+        Log.d("sendREQtoSER","trying to verify server");
+        if(sender.contains("7000253007")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
         {
+            Log.d("sendREQtoSER","server-"+sender+" msg-"+message);
             Toast.makeText(context,"Server Verified",Toast.LENGTH_SHORT).show();
             return 2;
 
         }
+        Log.d("sendREQtoSER","no server no ground");
 
         //Toast.makeText(context,"nothing Verified"+"sender: "+sender,Toast.LENGTH_SHORT).show();
         return 0;

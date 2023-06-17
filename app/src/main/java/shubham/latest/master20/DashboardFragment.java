@@ -75,15 +75,21 @@ public class DashboardFragment extends Fragment {
         final SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         TextView textView=rootView.findViewById(R.id.tv);
         AutoCompleteTextView autoCompleteTextView= rootView.findViewById(R.id.serversim);
+        AutoCompleteTextView autoCompleteTextView1= rootView.findViewById(R.id.groundsim);
         ArrayList<String> sim_cards=new ArrayList<>();
         sim_cards.add("SIM-1");
         sim_cards.add("SIM-2");
         ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item,sim_cards);
         autoCompleteTextView.setAdapter(stringArrayAdapter);
+        autoCompleteTextView1.setAdapter(stringArrayAdapter);
         //autoCompleteTextView.setThreshold(1);
         int pos = preferences.getInt("SelectedSim", -1);
         if(pos>=0)
             autoCompleteTextView.setText(sim_cards.get(pos),false);
+
+        int pos1 = preferences.getInt("SelectedSim1", -1);
+        if(pos1>=0)
+            autoCompleteTextView1.setText(sim_cards.get(pos1),false);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,6 +100,15 @@ public class DashboardFragment extends Fragment {
 
         });
 
+        autoCompleteTextView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                preferences.edit().putInt("SelectedSim1",position).apply();
+                Toast.makeText(getActivity(),sim_cards.get(position)+" is Selected as Default sim",Toast.LENGTH_SHORT).show();
+            }
+
+
+        });
         return rootView;
     }
 }
