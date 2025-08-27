@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'shubham.latest.master20'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "shubham.latest.master20"

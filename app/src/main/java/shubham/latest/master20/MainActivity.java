@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 EasyPermissions.requestPermissions(activity, "This app needs access to send SMS.", RC_PERM_SMS, wantedPerm);
             }
         } else {
-            Toast.makeText(getApplicationContext(),"some thing is wrong",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Your device doesn't have Sim card,\nPlease insert Sim card to run this app",Toast.LENGTH_LONG).show();
         }
 
     }

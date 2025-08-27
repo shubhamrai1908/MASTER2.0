@@ -47,7 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard);
         nav = findViewById(R.id.navmenu);
 
@@ -85,9 +85,10 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.addground) {
+             if (itemId == R.id.addground) {
                     startActivity(new Intent(getApplicationContext(), AddGround.class));
                     finish();
+               //  Toast.makeText(getApplicationContext(),"This feature is still in develpoment phase",Toast.LENGTH_LONG).show();
                 } else if (itemId == R.id.viewground) {
                     startActivity(new Intent(getApplicationContext(), ViewGround.class));
                     finish();
@@ -95,8 +96,9 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), ViewServer.class));
                     finish();
                 } else if (itemId == R.id.addserver) {
-                   // startActivity(new Intent(getApplicationContext(), AddServer.class));
-                   // finish();
+                    //startActivity(new Intent(getApplicationContext(), AddServer.class));
+                    //finish();
+                 Toast.makeText(getApplicationContext(),"This feature is still in develpoment phase",Toast.LENGTH_LONG).show();
                 }
                 return true;
 

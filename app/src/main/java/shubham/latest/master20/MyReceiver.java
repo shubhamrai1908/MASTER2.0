@@ -165,7 +165,7 @@ public class MyReceiver extends BroadcastReceiver {
                 break;
             case "bsnl":
                 server = serverlist.get("bsnl");
-                msg = "LOC " + reqno.trim();
+                msg = "getloc 91" + reqno.trim();
                 break;
             default:
                 return;
@@ -275,7 +275,7 @@ public class MyReceiver extends BroadcastReceiver {
         //ground ends
         //for server
         Log.d("sendREQtoSER","trying to verify server");
-        if(sender.contains("7000253007")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
+        if(sender.contains("9418099998")||sender.contains("7000253007")||sender.contains("29532562")||sender.contains("84235562")||sender.contains("2954724")||sender.contains("VI-CELLOC")||sender.contains("AR-LEALOC")||sender.contains("7021265165")||sender.contains("54051")||sender.contains("8800112112")||message.contains("MSISDN")||message.contains("Cell ID")||message.contains("IMEI")||message.contains("IMSI")||message.contains("MOB")||message.contains("CGI")||message.contains("Request ID"))
         {
             Log.d("sendREQtoSER","server-"+sender+" msg-"+message);
             Toast.makeText(context,"Server Verified",Toast.LENGTH_SHORT).show();
